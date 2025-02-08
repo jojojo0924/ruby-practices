@@ -8,8 +8,8 @@ year = params["y"] ? params["y"].to_i : Date.today.year
 month = params["m"] ? params["m"].to_i : Date.today.month
 
 # カレンダー表示
-print "      #{month}月 #{year}\n"
-print "日 月 火 水 木 金 土\n"
+puts "      #{month}月 #{year}"
+puts "日 月 火 水 木 金 土"
 print "   " * Date.new(year, month, 1).wday
 start_date = Date.new(year, month, 1)
 last_date = Date.new(year, month, -1)
