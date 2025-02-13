@@ -15,5 +15,7 @@ start_date = Date.new(year, month, 1)
 last_date = Date.new(year, month, -1)
 (start_date..last_date).each do |date|
   print date.mday.to_s.rjust(2) + " "
-  puts "\n" if date.saturday?
+  puts if date.saturday?
 end
+
+puts # プロンプトが最後の週と同じ行に表示される可能性があるため最後に改行を表示
