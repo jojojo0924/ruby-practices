@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require 'io/console/size'
 
@@ -28,7 +29,7 @@ def calculate_column_length(files)
 end
 
 def calculate_columns(column_length)
-  console_width = IO::console_size[1]
+  console_width = IO.console_size[1]
   columns = console_width / column_length
   columns > 3 ? 3 : columns # 最大3列
 end
