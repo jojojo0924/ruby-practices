@@ -1,11 +1,12 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-def calculate_strike_point(frames, index)
-  if frames[index + 1][0] == 10 # 次のフレームもストライクだった時
-    10 + frames[index + 1][0] + frames[index + 2][0]
+def calculate_extra_strike_points(frames, index)
+  next_frame_first = frames[index + 1][0]
+  if next_frame_first == 10 # 次のフレームもストライクだった時
+    next_frame_first + frames[index + 2][0]
   else
-    10 + frames[index + 1][0] + frames[index + 1][1]
+    next_frame_first + frames[index + 1][1]
   end
 end
 
@@ -21,21 +22,17 @@ scores.each do |s|
   end
 end
 
-frames = []
-shots.each_slice(2) do |s|
-  frames << s
-end
+frames = shots.each_slice(2).to_a
 
 partial_frames = frames[...9]
-total = frames[9..].flatten.sum # 10フレーム目の合計値を計算
-partial_frames.each_with_index do |frame, index|
-  point = if frame[0] == 10 # ストライク
-            calculate_strike_point(frames, index)
-          elsif frame.sum == 10 # スペア
-            10 + frames[index + 1][0]
-          else
-            frame.sum
-          end
-  total += point
+total = partial_frames.each_with_index.sum(frames[9..].flatten.sum) do |frame, index|
+  frame_sum = frame.sum
+  if frame[0] == 10 # ストライク
+    frame_sum + calculate_extra_strike_points(frames, index)
+  elsif frame_sum == 10 # スペア
+    frame_sum + frames[index + 1][0]
+  else
+    frame_sum
+  end
 end
 puts total
