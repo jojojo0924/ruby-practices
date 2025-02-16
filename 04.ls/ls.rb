@@ -3,9 +3,8 @@
 
 require 'io/console/size'
 require 'optparse'
-require 'debug'
 
-MAX_COLUMNS = 3.freeze
+MAX_COLUMNS = 3
 
 def main
   files = Dir.entries('.').sort
@@ -36,7 +35,6 @@ end
 def calculate_columns(column_length)
   console_width = IO.console_size[1]
   columns = console_width / column_length
-  binding.break
   columns > MAX_COLUMNS ? MAX_COLUMNS : columns # 最大3列
 end
 
