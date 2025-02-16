@@ -3,16 +3,18 @@
 
 require 'io/console/size'
 
+MAX_COLUMNS = 3.freeze
+
 def main
   files = Dir.entries('.').sort
   files.delete_if { |file| file[0] == '.' }
-  format(files)
+  short_format(files)
 end
 
-def format(files)
+def short_format(files)
   column_length = calculate_column_length(files)
   columns = calculate_columns(column_length)
-  rows = (files.size.to_f / columns).ceil
+  rows = files.size.ceildiv(columns)
   rows.times do |i|
     index = i
     while files.size > index
@@ -31,7 +33,7 @@ end
 def calculate_columns(column_length)
   console_width = IO.console_size[1]
   columns = console_width / column_length
-  columns > 3 ? 3 : columns # 最大3列
+  columns > MAX_COLUMNS ? MAX_COLUMNS : columns # 最大3列
 end
 
 main
