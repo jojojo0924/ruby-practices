@@ -2,12 +2,15 @@
 # frozen_string_literal: true
 
 require 'io/console/size'
+require 'optparse'
+require 'debug'
 
 MAX_COLUMNS = 3.freeze
 
 def main
   files = Dir.entries('.').sort
-  files.delete_if { |file| file[0] == '.' }
+  options = ARGV.getopts('a')
+  files = options['a'] ? files : files.delete_if { |file| file[0] == '.' }
   short_format(files)
 end
 
@@ -33,6 +36,7 @@ end
 def calculate_columns(column_length)
   console_width = IO.console_size[1]
   columns = console_width / column_length
+  binding.break
   columns > MAX_COLUMNS ? MAX_COLUMNS : columns # 最大3列
 end
 
