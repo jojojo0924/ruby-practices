@@ -2,12 +2,14 @@
 # frozen_string_literal: true
 
 require 'io/console/size'
+require 'optparse'
 
-MAX_COLUMNS = 3.freeze
+MAX_COLUMNS = 3
 
 def main
   files = Dir.entries('.').sort
-  files.delete_if { |file| file[0] == '.' }
+  options = ARGV.getopts('a')
+  files = options['a'] ? files : files.delete_if { |file| file[0] == '.' }
   short_format(files)
 end
 
