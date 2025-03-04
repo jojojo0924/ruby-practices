@@ -3,7 +3,7 @@
 
 require 'io/console/size'
 
-MAX_COLUMNS = 3.freeze
+MAX_COLUMNS = 3
 
 def main
   files = Dir.entries('.').sort
