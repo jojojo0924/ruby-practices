@@ -40,10 +40,7 @@ def long_format(files)
   puts "total #{total_blocks}"
   file_stats = create_file_stats(files)
   file_stats = adjust_length(file_stats)
-  file_stats.each do |file_stat|
-    print "#{file_stat[0]}  #{file_stat[1]} #{file_stat[2]}  #{file_stat[3]}  #{file_stat[4]}  #{file_stat[5]} #{file_stat[6]}"
-    puts
-  end
+  file_stats.each { |file_data| puts file_data.join }
 end
 
 def create_file_stats(files)
@@ -55,12 +52,12 @@ def create_file_stats(files)
     group = PERMISSION[permissions[1]]
     other = PERMISSION[permissions[2]]
     [
-      ftype + owner + group + other,
-      stat.nlink.to_s,
-      Etc.getpwuid(stat.uid).name,
-      Etc.getgrgid(stat.gid).name,
-      stat.size.to_s,
-      stat.mtime.strftime('%-m %e %H:%M'),
+      "#{ftype + owner + group + other}  ",
+      "#{stat.nlink} ",
+      "#{Etc.getpwuid(stat.uid).name}  ",
+      "#{Etc.getgrgid(stat.gid).name}  ",
+      "#{stat.size}  ",
+      "#{stat.mtime.strftime('%-m %e %H:%M')} ",
       file
     ]
   end
