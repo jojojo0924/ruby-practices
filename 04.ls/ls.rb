@@ -30,7 +30,10 @@ PERMISSION = {
 
 def main
   files = Dir.entries('.').sort
-  files.delete_if { |file| file[0] == '.' }
+  options = ARGV.getopts('r')
+  files = options['r'] ? files.reverse : files
+  options = ARGV.getopts('a')
+  files = options['a'] ? files : files.delete_if { |file| file[0] == '.' }
   options = ARGV.getopts('l')
   options['l'] ? long_format(files) : short_format(files)
 end
