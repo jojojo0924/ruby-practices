@@ -7,6 +7,8 @@ require 'optparse'
 
 MAX_COLUMNS = 3
 
+OPTIONS = 'alr'
+
 FTYPES = {
   'fifo' => 'p',
   'characterSpecial' => 'c',
@@ -30,11 +32,13 @@ PERMISSION = {
 
 def main
   files = Dir.entries('.').sort
-  options = ARGV.getopts('r')
+  run_opt_actions(files)
+end
+
+def run_opt_actions(files)
+  options = ARGV.getopts(OPTIONS)
   files = options['r'] ? files.reverse : files
-  options = ARGV.getopts('a')
   files = options['a'] ? files : files.delete_if { |file| file[0] == '.' }
-  options = ARGV.getopts('l')
   options['l'] ? long_format(files) : short_format(files)
 end
 
