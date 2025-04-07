@@ -29,24 +29,22 @@ def display_all(options)
     content = File.open(file).read
     file_stat = get_file_stat(content)
     display(file_stat, options, file)
-    total_file_stat[:lines] += file_stat[:lines]
-    total_file_stat[:words] += file_stat[:words]
-    total_file_stat[:bytes] += file_stat[:bytes]
+    file_stat.each do |k, v|
+      total_file_stat[k] += v
+    end
   end
   display(total_file_stat, options, 'total')
 end
 
 def display(file_stat, options, target = '')
-  lines = file_stat[:lines]
-  lines_to_display = lines.to_s.rjust(calc_width(lines))
-  words = file_stat[:words]
-  words_to_display = words.to_s.rjust(calc_width(words))
-  bytes = file_stat[:bytes]
-  bytes_to_display = bytes.to_s.rjust(calc_width(bytes))
+  stat_to_display = {}
+  file_stat.each do |k, v|
+    stat_to_display[k] = v.to_s.rjust(calc_width(v))
+  end
   options.transform_values!(&:!) if options.values.all?(false)
-  print lines_to_display if options['l']
-  print words_to_display if options['w']
-  print bytes_to_display if options['c']
+  print stat_to_display[:lines] if options['l']
+  print stat_to_display[:words] if options['w']
+  print stat_to_display[:bytes] if options['c']
   puts " #{target}"
 end
 
@@ -59,7 +57,7 @@ def get_file_stat(content)
 end
 
 def calc_width(number)
-  number.to_s.size < 8 ? 8 : number.to_s.size + 1
+  [8, number.to_s.size + 1].max
 end
 
 main
